@@ -3,9 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ======================
-# PAGE CONFIG
-# ======================
+
+## PAGE CONFIG
 st.set_page_config(
     page_title="Data Visualization App",
     layout="wide"
@@ -13,9 +12,9 @@ st.set_page_config(
 
 st.title("📊 CSV / Excel Data Visualization & Analysis App")
 
-# ======================
-# FILE UPLOAD
-# ======================
+
+## FILE UPLOAD
+
 uploaded_file = st.file_uploader(
     "Upload a CSV or Excel file",
     type=["csv", "xlsx"]
@@ -25,9 +24,9 @@ if uploaded_file is None:
     st.info("Please upload a CSV or Excel file to start.")
     st.stop()
 
-# ======================
-# LOAD DATA
-# ======================
+
+## LOAD DATA
+
 if uploaded_file.name.endswith(".csv"):
     df = pd.read_csv(uploaded_file)
 else:
@@ -35,15 +34,8 @@ else:
 
 st.success("File uploaded successfully ✅")
 
-# ======================
-# DATA PREVIEW
-# ======================
 st.subheader("🔍 Data Preview")
 st.dataframe(df)
-
-# ======================
-# DATA INFO
-# ======================
 st.subheader("ℹ️ Dataset Information")
 
 col1, col2 = st.columns(2)
@@ -57,9 +49,9 @@ with col2:
     st.write("**Missing Values per Column:**")
     st.write(df.isnull().sum())
 
-# ======================
-# FILTER DATA
-# ======================
+
+## FILTER DATA
+
 st.subheader("🎯 Data Filtering")
 
 filter_column = st.selectbox(
@@ -79,15 +71,9 @@ filtered_df = df[df[filter_column] == filter_value]
 st.write("Filtered Data")
 st.dataframe(filtered_df)
 
-# ======================
-# DESCRIPTIVE STATISTICS
-# ======================
 st.subheader("📈 Descriptive Statistics")
 st.write(df.describe(include="all"))
 
-# ======================
-# VISUALIZATION
-# ======================
 st.subheader("📊 Data Visualization")
 
 numeric_columns = df.select_dtypes(include=["int64", "float64"]).columns
@@ -106,7 +92,7 @@ x_col = st.selectbox(
     df.columns
 )
 
-# Y-axis only when needed
+
 if chart_type != "Histogram":
     y_col = st.selectbox(
         "Select Y-axis",
@@ -138,9 +124,7 @@ if chart_type != "Histogram":
 
 st.pyplot(fig)
 
-# ======================
-# DATA COMPARISON
-# ======================
+
 st.subheader("⚖️ Data Comparison")
 
 compare_col = st.selectbox(
@@ -155,9 +139,7 @@ col2.metric("Median", round(df[compare_col].median(), 2))
 col3.metric("Min", round(df[compare_col].min(), 2))
 col4.metric("Max", round(df[compare_col].max(), 2))
 
-# ======================
-# CORRELATION MATRIX
-# ======================
+
 st.subheader("🔗 Correlation Matrix")
 
 corr = df[numeric_columns].corr()
